@@ -7,6 +7,8 @@ import java.sql.ResultSet;
 import java.sql.CallableStatement;
 import java.sql.SQLException;
 import Modelo.Categoria;
+import java.util.ArrayList;
+import java.util.List;
 /**
  *
  * @author PolSent
@@ -18,7 +20,7 @@ public class ICRUDCategoria {
     
     //Crear Categoria
     public void crearCategoria(Categoria nuevaCategoria){
-        String consulta ="{ CALL usp_CrearCategoria(?,?,?)}";
+        String consulta ="{ CALL usp_CrearCategoria(?,?)}";
         try{
             CallableStatement comando = ConexionPostgreSQL.getConnection().prepareCall(consulta);
             comando.setString(1, nuevaCategoria.getNombre());
@@ -56,9 +58,27 @@ public class ICRUDCategoria {
             comando.setInt(1, idCategoria);
             comando.execute();
         }catch (SQLException e){
-            System.out.println("Error al eliminar cliente: "+e.getMessage());
+            System.out.println("Error al eliminar categoria: "+e.getMessage());
         }
     }     
         
     //Listar Categoria
+        public List<Categoria> listarClientes(){
+        List<Categoria> lista = new ArrayList<>();
+        String consulta = "{CALL usp_listarCategoria()}";
+        try{
+            CallableStatement comando = ConexionPostgreSQL.getConnection().prepareCall(consulta);
+            ResultSet rs = comando.executeQuery();
+            while(rs.next()){
+                Categoria categoria = new Categoria();
+                categoria.setIdCategoria(rs.getInt("idCategoria"));
+                categoria.setNombre(rs.getString("nombre"));
+                categoria.setDescripcion(rs.getString("descripcion"));
+                lista.add(categoria);
+            }
+        }catch(SQLException e){
+            System.out.println("Error al listar categoria: "+e.getMessage());
+        }
+        return lista;
+    }
 }

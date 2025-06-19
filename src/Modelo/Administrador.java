@@ -3,7 +3,7 @@
  * Click nbfs://nbhost/SystemFileSystem/Templates/Classes/Class.java to edit this template
  */
 package Modelo;
-
+import java.sql.Date;
 /**
  *
  * @author PolSent
@@ -14,12 +14,12 @@ public class Administrador {
     private String apellidoPaterno;
     private String apellidoMaterno;
     private String genero;
-    private String fechaNac;
+    private Date fechaNac;
     private String telefono;
     private String correo;
     private String contrasena;
 
-    public Administrador(int idAdministrador, String nombre, String apellidoPaterno, String apellidoMaterno, String genero, String fechaNac, String telefono, String correo, String contrasena) {
+    public Administrador(int idAdministrador, String nombre, String apellidoPaterno, String apellidoMaterno, String genero, Date fechaNac, String telefono, String correo, String contrasena) {
         this.idAdministrador = idAdministrador;
         this.nombre = nombre;
         this.apellidoPaterno = apellidoPaterno;
@@ -74,11 +74,11 @@ public class Administrador {
         this.genero = genero;
     }
 
-    public String getFechaNac() {
+    public Date getFechaNac() {
         return fechaNac;
     }
 
-    public void setFechaNac(String fechaNac) {
+    public void setFechaNac(Date fechaNac) {
         this.fechaNac = fechaNac;
     }
 

@@ -10,7 +10,6 @@ import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.List;
-
 /**
  *
  * @author PolSent
@@ -22,21 +21,20 @@ public class ICRUDAdministrador {
     
     //Agregar administrador
     public void crearAdministrador(Administrador nuevoAdministrador){
-        String consulta = "{ CALL usp_AñadirAdministrador(?,?,?,?,?,?) }";
+        String consulta = "{ CALL usp_AñadirAdministrador(?,?,?,?,?,?,?) }";
         try {
             CallableStatement comando = ConexionPostgreSQL.getConnection().prepareCall(consulta);
-            comando.setInt(1, nuevoAdministrador.getIdAdministrador());
-            comando.setString(2, nuevoAdministrador.getNombre());
-            comando.setString(3, nuevoAdministrador.getApellidoPaterno());
-            comando.setString(4, nuevoAdministrador.getApellidoMaterno());
-            comando.setString(5, nuevoAdministrador.getGenero());
-            comando.setString(5, nuevoAdministrador.getFechaNac());
-            comando.setString(5, nuevoAdministrador.getCorreo());
-            comando.setString(6, nuevoAdministrador.getContrasena());
+            comando.setString(1, nuevoAdministrador.getNombre());
+            comando.setString(2, nuevoAdministrador.getApellidoPaterno());
+            comando.setString(3, nuevoAdministrador.getApellidoMaterno());
+            comando.setString(4, nuevoAdministrador.getGenero());
+            comando.setDate(5, nuevoAdministrador.getFechaNac());
+            comando.setString(6, nuevoAdministrador.getCorreo());
+            comando.setString(7, nuevoAdministrador.getContrasena());
             comando.execute();
             System.out.println("Cliente insertado correctamente.");
         } catch (SQLException e) {
-            System.out.println("Error al insertar cliente: " + e.getMessage());
+            System.out.println("Error al insertar administrador: " + e.getMessage());
         }
     }
     
@@ -51,13 +49,13 @@ public class ICRUDAdministrador {
             comando.setString(3, administrador.getApellidoPaterno());
             comando.setString(4, administrador.getApellidoMaterno());
             comando.setString(5, administrador.getGenero());
-            comando.setString(5, administrador.getFechaNac());
+            comando.setDate(5, administrador.getFechaNac());
             comando.setString(5, administrador.getCorreo());
             comando.setString(6, administrador.getContrasena());
             comando.execute();
             System.out.println("Cliente modificado correctamente.");
         } catch (SQLException e) {
-            System.out.println("Error al modificar cliente: " + e.getMessage());
+            System.out.println("Error al modificar adminsitrador: " + e.getMessage());
         }
     }
     
@@ -69,13 +67,13 @@ public class ICRUDAdministrador {
             comando.setInt(1, idAdministrador);
             comando.execute();
         }catch (SQLException e){
-            System.out.println("Error al eliminar cliente: "+e.getMessage());
+            System.out.println("Error al eliminar administrador: "+e.getMessage());
         }
     }
     
     
     //Listar Administrador
-    public List<Administrador> listarClientes(){
+    public List<Administrador> listaAdministradores(){
         List<Administrador> lista = new ArrayList<>();
         String consulta = "{CALL usp_listarCliente()}";
         try{
@@ -88,10 +86,13 @@ public class ICRUDAdministrador {
                 administrador.setApellidoPaterno(rs.getString("apellidoPaterno"));
                 administrador.setApellidoMaterno(rs.getString("apellidoMaterno"));
                 administrador.setGenero(rs.getString("genero"));
+                administrador.setFechaNac(rs.getDate("FechaNac"));
+                administrador.setCorreo(rs.getString("correo"));
+                administrador.setContrasena(rs.getString("contrasena"));
                 lista.add(administrador);
             }
         }catch(SQLException e){
-            System.out.println("Error al listar clientes: "+e.getMessage());
+            System.out.println("Error al listar administradores: "+e.getMessage());
         }
         return lista;
     }

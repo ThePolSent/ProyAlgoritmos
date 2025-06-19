@@ -4,7 +4,6 @@
  */
 package Persistencia;
 import Modelo.Cliente;
-import javax.swing.*;
 import java.sql.CallableStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
