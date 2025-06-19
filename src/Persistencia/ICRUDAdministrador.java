@@ -6,7 +6,10 @@ package Persistencia;
 
 import Modelo.Administrador;
 import java.sql.CallableStatement;
+import java.sql.ResultSet;
 import java.sql.SQLException;
+import java.util.ArrayList;
+import java.util.List;
 
 /**
  *
@@ -17,9 +20,9 @@ public class ICRUDAdministrador {
         
     }
     
-    //Agregar cliente
+    //Agregar administrador
     public void crearAdministrador(Administrador nuevoAdministrador){
-        String consulta = "{ CALL usp_ModificarCliente(?,?,?,?,?,?) }";
+        String consulta = "{ CALL usp_AñadirAdministrador(?,?,?,?,?,?) }";
         try {
             CallableStatement comando = ConexionPostgreSQL.getConnection().prepareCall(consulta);
             comando.setInt(1, nuevoAdministrador.getIdAdministrador());
@@ -38,9 +41,9 @@ public class ICRUDAdministrador {
     }
     
     
-    //Modificar cliente
+    //Modificar administrador
     public void modificarAdministrador(Administrador administrador){
-        String consulta = "{ CALL usp_ModificarCliente(?,?,?,?,?,?) }";
+        String consulta = "{ CALL usp_ModificarAdministrador(?,?,?,?,?,?) }";
         try {
             CallableStatement comando = ConexionPostgreSQL.getConnection().prepareCall(consulta);
             comando.setInt(1, administrador.getIdAdministrador());
@@ -58,8 +61,7 @@ public class ICRUDAdministrador {
         }
     }
     
-    //Eliminar Cliente
-    
+    //Eliminar administrador
     public void eliminarAdministrador(int idAdministrador){
         String consulta ="{ CALL usp_EliminarAdministrador(?) }";
         try{
@@ -71,4 +73,26 @@ public class ICRUDAdministrador {
         }
     }
     
+    
+    //Listar Administrador
+    public List<Administrador> listarClientes(){
+        List<Administrador> lista = new ArrayList<>();
+        String consulta = "{CALL usp_listarCliente()}";
+        try{
+            CallableStatement comando = ConexionPostgreSQL.getConnection().prepareCall(consulta);
+            ResultSet rs = comando.executeQuery();
+            while(rs.next()){
+                Administrador administrador = new Administrador();
+                administrador.setIdAdministrador(rs.getInt("idAdministrador"));
+                administrador.setNombre(rs.getString("nombre"));
+                administrador.setApellidoPaterno(rs.getString("apellidoPaterno"));
+                administrador.setApellidoMaterno(rs.getString("apellidoMaterno"));
+                administrador.setGenero(rs.getString("genero"));
+                lista.add(administrador);
+            }
+        }catch(SQLException e){
+            System.out.println("Error al listar clientes: "+e.getMessage());
+        }
+        return lista;
+    }
 }

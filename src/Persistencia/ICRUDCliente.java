@@ -10,7 +10,7 @@ import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.List;
-import java.sql.Connection;
+
 /**
  *
  * @author PolSent
@@ -19,6 +19,7 @@ public class ICRUDCliente {
     public ICRUDCliente(){
         
     }
+    
     
     //Agregar cliente
     public void crearCliente(Cliente nuevoCliente){
@@ -39,6 +40,7 @@ public class ICRUDCliente {
     }
     
     
+    
     //Modificar cliente
     public void modificarCliente(Cliente cliente){
         String consulta = "{ CALL usp_ModificarCliente(?,?,?,?,?) }";
@@ -56,6 +58,7 @@ public class ICRUDCliente {
         }
     }
     
+    
     //Eliminar Cliente
     public void eliminarCliente(int idCliente) {
         String consulta = "{ CALL usp_EliminarCliente(?) }";
@@ -69,6 +72,7 @@ public class ICRUDCliente {
         }
     }
     
+
     //Listar Cliente
     public List<Cliente> listarClientes(){
         List<Cliente> lista = new ArrayList<>();
